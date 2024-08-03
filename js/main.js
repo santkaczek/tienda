@@ -1,4 +1,4 @@
-// productos //
+// Variables globales
 const productos = [
     // Gorras 
     {
@@ -33,14 +33,16 @@ const productos = [
     }
 ];
 
+// Asegúrate de que productosEnCarrito esté definida en el ámbito global
+let productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito")) || [];
+
 const contenedorProductos = document.querySelector("#contenedor-productos");
 const botonesCategorias = document.querySelectorAll(".boton-categoria");
-const tituloPrincipal = document.querySelector("titulo-principal");
+const tituloPrincipal = document.querySelector("#titulo-principal");
 let botonesAgregar = document.querySelectorAll(".producto-agregar");
-const numerito = document.querySelector("numerito")
+const numerito = document.querySelector("#numerito");
 
 function cargarProductos(productosElegidos) {
-
     contenedorProductos.innerHTML = "";
     productosElegidos.forEach(producto => {
         const div = document.createElement("div");
@@ -58,67 +60,76 @@ function cargarProductos(productosElegidos) {
     actualizarBotonesAgregar();
 }
 
-cargarProductos(productos);
-
-botonesCategorias.forEach(boton => {
-    boton.addEventListener("click", (e) =>{
-        botonesCategorias.forEach(boton.classList.remove.active)
-        e.currentTarget.classList.add("active");
-
-        if (e.currentTarget.id != "todos") {
-            const productosBoton = productos.filter(producto => producto.id === e.currentTarget.id )
-        cargarProductos(productosBoton);
-
-        } else {
-            tituloPrincipal.innerText = "Shop"
-            cargarProductos(productos);
-        }
-        
-
-
-    })
-});
-
 function actualizarBotonesAgregar() {
     botonesAgregar = document.querySelectorAll(".producto-agregar");
 
-    botonesAgregar.forEach(boton =>{
+    botonesAgregar.forEach(boton => {
         boton.addEventListener("click", agregarAlCarrito);
     });
-
 }
-
-let productosEnCarrito;
-
-let productosEnCarritoLS = localStorage.getItem("productos-en-carrito")
-
-if(productosEnCarritoLS) {
-    let productosEnCarrito = JSON.parse(productosEnCarritoLS);
-    actualizarNumerito();
-} else {
-    productosEnCarrito = [];
-}
-
 
 function agregarAlCarrito(e) {
     const idBoton = e.currentTarget.id;
     const productoAgregado = productos.find(producto => producto.id === idBoton);
-    if(productosEnCarrito.some(producto => producto.id === idBoton)) {
-        const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
-        productosEnCarrito(index).cantidad++;
+
+    if (!productoAgregado) {
+        console.error("Producto no encontrado");
+        return;
+    }
+
+    // Buscar si el producto ya está en el carrito
+    const productoEnCarrito = productosEnCarrito.find(producto => producto.id === idBoton);
+
+    if (productoEnCarrito) {
+        // Si el producto está en el carrito, incrementar la cantidad
+        productoEnCarrito.cantidad++;
     } else {
+        // Si el producto no está en el carrito, agregarlo con cantidad 1
         productoAgregado.cantidad = 1;
         productosEnCarrito.push(productoAgregado);
     }
+
     actualizarNumerito();
-
-    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito))
-
-};
+    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+}
 
 function actualizarNumerito() {
-    let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
-    numerito.innerText = nuevoNumerito;
+    // Obtén el elemento del DOM por su ID
+    const numerito = document.getElementById('numerito');
 
-};
+    // Asegúrate de que el elemento exista antes de intentar modificarlo
+    if (numerito) {
+        // Calcula el número total de productos en el carrito
+        let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
+        numerito.innerText = nuevoNumerito;
+    } else {
+        console.error('Elemento con ID "numerito" no encontrado');
+    }
+}
 
+// Llamar a la función para cargar los productos al cargar la página
+cargarProductos(productos);
+
+botonesCategorias.forEach(boton => {
+    boton.addEventListener("click", (e) => {
+        botonesCategorias.forEach(boton => boton.classList.remove("active"));
+        e.currentTarget.classList.add("active");
+
+        if (e.currentTarget.id !== "todos") {
+            const productosBoton = productos.filter(producto => producto.categoria.id === e.currentTarget.id);
+            cargarProductos(productosBoton);
+        } else {
+            tituloPrincipal.innerText = "Shop";
+            cargarProductos(productos);
+        }
+    });
+});
+
+// Añadir el event listener para el botón Shop si es necesario
+const botonShop = document.querySelector("#Shop");
+if (botonShop) {
+    botonShop.addEventListener("click", () => {
+        // Esta función puede actualizar el contenido de la página o redirigir
+        cargarProductos(productos); // Actualiza los productos
+    });
+}
