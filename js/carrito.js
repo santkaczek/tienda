@@ -8,7 +8,7 @@ const contenedorCarritoComprado = document.querySelector("#carrito-comprado");
 const botonVaciar = document.querySelector("#carrito-acciones-vaciar");
 const contenedorTotal = document.querySelector("#total");
 const botonComprar = document.querySelector("#carrito-acciones-comprar");
-const botonShop = document.querySelector("#Shop"); // Asegúrate de que el ID sea correcto
+const botonShop = document.querySelector("#Shop"); 
 
 // Verifica que los elementos existan antes de añadir event listeners
 if (botonVaciar) {

@@ -1,4 +1,4 @@
-// Variables globales
+// productos
 const productos = [
     // Gorras 
     {
@@ -33,7 +33,7 @@ const productos = [
     }
 ];
 
-// Asegúrate de que productosEnCarrito esté definida en el ámbito global
+
 let productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito")) || [];
 
 const contenedorProductos = document.querySelector("#contenedor-productos");
@@ -81,10 +81,10 @@ function agregarAlCarrito(e) {
     const productoEnCarrito = productosEnCarrito.find(producto => producto.id === idBoton);
 
     if (productoEnCarrito) {
-        // Si el producto está en el carrito, incrementar la cantidad
+        
         productoEnCarrito.cantidad++;
     } else {
-        // Si el producto no está en el carrito, agregarlo con cantidad 1
+        
         productoAgregado.cantidad = 1;
         productosEnCarrito.push(productoAgregado);
     }
@@ -94,12 +94,12 @@ function agregarAlCarrito(e) {
 }
 
 function actualizarNumerito() {
-    // Obtén el elemento del DOM por su ID
+    
     const numerito = document.getElementById('numerito');
 
-    // Asegúrate de que el elemento exista antes de intentar modificarlo
+    
     if (numerito) {
-        // Calcula el número total de productos en el carrito
+        
         let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
         numerito.innerText = nuevoNumerito;
     } else {
@@ -107,7 +107,7 @@ function actualizarNumerito() {
     }
 }
 
-// Llamar a la función para cargar los productos al cargar la página
+//función para cargar los productos al cargar la página
 cargarProductos(productos);
 
 botonesCategorias.forEach(boton => {
@@ -125,7 +125,7 @@ botonesCategorias.forEach(boton => {
     });
 });
 
-// Añadir el event listener para el botón Shop si es necesario
+
 const botonShop = document.querySelector("#Shop");
 if (botonShop) {
     botonShop.addEventListener("click", () => {
