@@ -1,0 +1,32 @@
+[
+    {
+        "id": "gorra-blanca",
+        "titulo": "Gorra Blanca",
+        "imagen": "./img/gorra blanca.jpg",
+        "categoria": {
+            "nombre": "Gorra",
+            "id": "gorra"
+        },
+        "precio": 20000
+    },
+    {
+        "id": "gorra-negra",
+        "titulo": "Gorra Negra",
+        "imagen": "./img/gorra negra.jpg",
+        "categoria": {
+            "nombre": "Gorra",
+            "id": "gorra"
+        },
+        "precio": 20000
+    },
+    {
+        "id": "gorra-blanca-y-negra",
+        "titulo": "Gorra Blanca y Negra",
+        "imagen": "./img/gorra blanca y negra.jpg",
+        "categoria": {
+            "nombre": "Gorra",
+            "id": "gorra"
+        },
+        "precio": 20000
+    }
+]
